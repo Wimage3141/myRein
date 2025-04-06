@@ -29,7 +29,7 @@ const DeepSeekTestScreen = () => {
       const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
         method: 'POST',
         headers: {
-          Authorization: `Bearer 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`,
+          Authorization: `Bearer ${OPENROUTER_API_KEY}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
