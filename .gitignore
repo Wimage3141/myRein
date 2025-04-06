@@ -38,5 +38,7 @@ yarn-error.*
 app-example
 
 # secret token file
-secrets.tsx
+secrets
+openrouter.tsx
+
 
