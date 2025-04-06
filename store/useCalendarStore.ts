@@ -6,12 +6,12 @@ type CalendarItem = {
   height: number;
 };
 
-type Store = {
+type CalendarStore = {
   items: { [date: string]: CalendarItem[] };
-  setItems: (items: { [date: string]: CalendarItem[] }) => void;
+  setItems: (newItems: { [date: string]: CalendarItem[] }) => void;
 };
 
-export const useCalendarStore = create<Store>((set) => ({
+export const useCalendarStore = create<CalendarStore>((set) => ({
   items: {},
   setItems: (newItems) => set({ items: newItems }),
 }));

@@ -40,5 +40,6 @@ app-example
 # secret token file
 secrets
 openrouter.tsx
+openaisecret.tsx
 
 

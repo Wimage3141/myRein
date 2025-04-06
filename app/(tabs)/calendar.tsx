@@ -3,7 +3,7 @@ import React from "react";
 import { useRouter } from "expo-router";
 import { Button, View, StyleSheet, Text } from "react-native";
 import { Agenda } from "react-native-calendars";
-import { useCalendarStore } from "../store/useCalendarStore"; // 🧠 global store for shared state
+import { useCalendarStore } from "../../store/useCalendarStore"; // 🧠 global store for shared state
 
 export default function Calendar() {
   const router = useRouter();
