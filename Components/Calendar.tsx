@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View, Text, Button, FlatList } from 'react-native'
 import React, { useState } from 'react'
 import { Task } from '../types/types';
 
@@ -60,9 +60,32 @@ const Calendar = () => {
     ));
   }
 
+  const renderTask = ({ item }: { item:Task }) => (
+    <View>
+      <Text>{item.taskDesc}</Text>
+      <Text>Scheduled: {item.startTime} -> {item.endTime}</Text>
+      <Text>Started at: {item.timeStarted || "Not started yet"}</Text>
+      <Text>Ended at: {item.endTime || "Not ended yet"}</Text>
+
+      {item.timeStarted && (
+        <Button title='START' onPress={() => startTask(item.id)} />
+      )}
+
+      {item.timeEnded && (
+        <Button title='END' onPress={() => endTask(item.id)} />
+      )}
+    </View>
+  )
+
   return (
     <View>
-      <Text>Calendar</Text>
+      <Text>Calendar Task</Text>
+
+      <FlatList
+        data={tasks}
+        keyExtractor={item => item.id}
+        renderItem={renderTask}
+      />
     </View>
   )
 }
