@@ -1,11 +1,20 @@
 import { View, Text, Button, FlatList } from 'react-native'
 import React, { useState } from 'react'
 import { Task } from '../types/types';
+import { router } from 'expo-router';
 
 const Calendar = () => {
   // addTask()
   // startTask()
   // endTask()
+  const openDayTasks = (date:string) => {
+    router.push({
+      pathname: '/daytasks',
+      params: { date: date },
+    })
+  }
+
+
   const currDate = new Date().toISOString();
   let timeStarted = null;
   let timeEnded = null;
