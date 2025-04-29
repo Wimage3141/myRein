@@ -4,7 +4,7 @@ import { useLocalSearchParams, router } from 'expo-router';
 import { useTasks } from '../TaskContext';
 
 const TaskDetail = () => {
-    const { id } = useLocalSearchParams(); // get task ID from URL
+    const { id } = useLocalSearchParams(); // get task ID from URL, this can be done with [id].tsx, no need params object
     const { tasks, startTask, endTask } = useTasks(); // get tasks and control functions
   
     const task = tasks.find(task => task.id === id);
