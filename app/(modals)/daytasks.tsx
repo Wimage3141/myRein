@@ -7,6 +7,9 @@ const DayTasks = () => {
   const { date } = useLocalSearchParams(); // grab the selected date
   const { tasks } = useTasks(); // you can grab one of the many objects returned by the hook by their name
 
+  console.log("All tasks: ", tasks);
+  console.log("Number of tasks: ", tasks.length);
+
   // Filter real tasks for the selected date
   const tasksForDate = tasks.filter(task => task.date === date);
 
