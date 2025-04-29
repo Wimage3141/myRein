@@ -5,9 +5,13 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
 Test video:
 <p align="center">
   <video autoplay loop muted playsinline width="600">
-    <source src="https://github.com/user-attachments/assets/ecb5b7bd-9147-43c0-932b-ba5a369b63e5" type="video/mp4" />
+    <source
+      src="https://raw.githubusercontent.com/your-user/your-repo/main/assets/demo.mp4"
+      type="video/mp4"
+    />
   </video>
 </p>
+
 
 
 ## Get started
