@@ -1,15 +1,14 @@
 import { View, Text, Button, FlatList, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { useLocalSearchParams, router } from 'expo-router';
+import { useTasks } from '../TaskContext'; // <-- NEW: import your custom hook
 
 const DayTasks = () => {
-  const { date } = useLocalSearchParams(); // Grab the selected date
+  const { date } = useLocalSearchParams(); // grab the selected date
+  const { tasks } = useTasks(); // you can grab one of the many objects returned by the hook by their name
 
-  // 🔥 Fake tasks for demo
-  const tasksForDate = [
-    { id: 'task-1', title: 'Go to Gym' },
-    { id: 'task-2', title: 'Finish React Native course' },
-  ];
+  // Filter real tasks for the selected date
+  const tasksForDate = tasks.filter(task => task.date === date);
 
   const handleTaskPress = (taskId: string) => {
     router.push(`/tasks/${taskId}`);
@@ -21,13 +20,13 @@ const DayTasks = () => {
 
       <FlatList
         data={tasksForDate}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => String(item.id)}
         renderItem={({ item }) => (
           <TouchableOpacity
             className="p-4 mb-4 bg-gray-100 rounded-lg"
             onPress={() => handleTaskPress(item.id)}
           >
-            <Text className="text-lg font-bold">{item.title}</Text>
+            <Text className="text-lg font-bold">{item.taskDesc || "No Description"}</Text>
           </TouchableOpacity>
         )}
       />
