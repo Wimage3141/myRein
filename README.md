@@ -3,7 +3,12 @@
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
 Test video:
-https://github.com/user-attachments/assets/ecb5b7bd-9147-43c0-932b-ba5a369b63e5
+<p align="center">
+  <video autoplay loop muted playsinline width="600">
+    <source src="https://github.com/user-attachments/assets/ecb5b7bd-9147-43c0-932b-ba5a369b63e5" type="video/mp4" />
+  </video>
+</p>
+
 
 ## Get started
 
