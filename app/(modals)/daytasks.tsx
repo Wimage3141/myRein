@@ -1,16 +1,12 @@
-import { View, Text, Button, FlatList, TouchableOpacity } from 'react-native';
 import React from 'react';
-import { useLocalSearchParams, router } from 'expo-router';
-import { useTasks } from '../TaskContext'; // <-- NEW: import your custom hook
+import { View, Text, FlatList, TouchableOpacity } from 'react-native';
+import { Stack, useLocalSearchParams, router } from 'expo-router';
+import { useTasks } from '../TaskContext';
 
-const DayTasks = () => {
-  const { date } = useLocalSearchParams(); // grab the selected date
-  const { tasks, deleteTask } = useTasks(); // you can grab one of the many objects returned by the hook by their name
+export default function DayTasks() {
+  const { date } = useLocalSearchParams<{ date: string }>();
+  const { tasks, deleteTask } = useTasks();
 
-  console.log("All tasks: ", tasks);
-  console.log("Number of tasks: ", tasks.length);
-
-  // Filter real tasks for the selected date
   const tasksForDate = tasks.filter(task => task.date === date);
 
   const handleTaskPress = (taskId: string) => {
@@ -18,29 +14,52 @@ const DayTasks = () => {
   };
 
   return (
-    <View className="flex-1 bg-white p-4">
-      <Text className="text-2xl font-bold mb-4">Tasks for {date}</Text>
+    <>
+      {/* hide the auto-header */}
+      <Stack.Screen options={{ headerShown: false }} />
 
-      <FlatList
-        data={tasksForDate}
-        keyExtractor={(item) => String(item.id)}
-        renderItem={({ item }) => (
-          <View className="p-4 mb-4 bg-gray-100 rounded-lg">
-            <TouchableOpacity onPress={() => handleTaskPress(item.id)}>
-              <Text className="text-lg font-bold">{item.taskDesc || "No Description"}</Text>
-            </TouchableOpacity>
+      <View className="flex-1 bg-white p-4">
+        <Text className="text-2xl font-bold mb-6 text-center">
+          Tasks for {date}
+        </Text>
 
-            <View className="mt-2" />
-            
-            <Button title="Delete" color="red" onPress={() => deleteTask(item.id)} />
-          </View>
-        )}
-      />
+        <FlatList
+          data={tasksForDate}
+          keyExtractor={item => item.id}
+          renderItem={({ item }) => (
+            <View className="flex-row items-center justify-between bg-gray-100 rounded-lg px-4 py-3 mb-4">
+              <TouchableOpacity
+                onPress={() => handleTaskPress(item.id)}
+                className="flex-1"
+              >
+                <Text className="text-lg font-bold">
+                  {item.taskDesc || 'No Description'}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => deleteTask(item.id)}
+                className="w-10 h-10 bg-pink-200 rounded-full items-center justify-center ml-4"
+              >
+                <Text className="text-pink-800 font-bold">D</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+          ListEmptyComponent={
+            <Text className="text-center text-gray-500 mt-8">
+              No tasks for this date.
+            </Text>
+          }
+        />
 
-      {/* Close modal button */}
-      <Button title="Close" onPress={() => router.back()} />
-    </View>
+        <View className="items-center mt-6">
+          <TouchableOpacity
+            onPress={() => router.back()}
+            className="px-6 py-3 bg-pink-200 rounded-full"
+          >
+            <Text className="text-pink-800 font-semibold">Close</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </>
   );
-};
-
-export default DayTasks;
+}

@@ -1,4 +1,4 @@
-import { View, Text, Button, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList } from 'react-native';
 import React from 'react';
 import { router } from 'expo-router';
 
@@ -6,46 +6,90 @@ const CalendarTab = () => {
   const openDayTasks = (date: string) => {
     router.push({
       pathname: '/daytasks',
-      params: { date: date },
+      params: { date },
     });
   };
 
-  // Generate dates (April 28 to June 30, hardcoded for now)
-  const generateDates = () => {
-    const dates: string[] = [];
-    const startDate = new Date("2025-04-28");
-    const endDate = new Date("2025-06-30");
+  const today = new Date().toISOString().split('T')[0];
 
-    let current = new Date(startDate);
+  const generateAprilGrid = () => {
+    const year = 2025;
+    const month = 3; // April
+    const totalDays = 30;
+    const firstDay = new Date(year, month, 1).getDay();
+    const totalCells = Math.ceil((firstDay + totalDays) / 7) * 7;
+    const days: (string | null)[] = [];
 
-    while (current <= endDate) {
-      dates.push(current.toISOString().split('T')[0]);
-      current.setDate(current.getDate() + 1);
+    for (let i = 0; i < firstDay; i++) days.push(null);
+    for (let d = 1; d <= totalDays; d++) {
+      days.push(new Date(year, month, d).toISOString().split('T')[0]);
     }
+    while (days.length < totalCells) days.push(null);
 
-    return dates;
+    return days;
   };
 
-  const dates = generateDates();
+  const grid = generateAprilGrid();
 
   return (
-    <View className="flex-1 p-6 bg-white">
-      <Text className="text-2xl font-bold mb-6">Select a Day</Text>
+    <View style={{ flex: 1, padding: 16, backgroundColor: '#fff' }}>
+      <Text style={{
+        fontSize: 24,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        marginBottom: 50,  // ↑ increased gap
+        marginTop: 50
+      }}>
+        April 2025
+      </Text>
+
+      <View style={{
+        flexDirection: 'row',
+        marginBottom: 8,     // ↑ gap before grid
+      }}>
+        {['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(day => (
+          <View key={day} style={{ flex: 1, alignItems: 'center' }}>
+            <Text style={{ fontWeight: '600' }}>{day}</Text>
+          </View>
+        ))}
+      </View>
 
       <FlatList
-        data={dates}
-        keyExtractor={(item) => item}
-        numColumns={7} // <-- ADD THIS: 7 days per week
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            className="flex-1 m-1 p-4 bg-gray-200 rounded-lg items-center"
-            onPress={() => openDayTasks(item)}
-          >
-            <Text className="text-sm">{item.split('-')[2]}</Text> {/* only show day (like 28) */}
-          </TouchableOpacity>
-        )}
-      />
+        data={grid}
+        keyExtractor={(_, idx) => `cell-${idx}`}
+        numColumns={7}
+        scrollEnabled={false}
+        contentContainerStyle={{ marginTop: 8 }}  // ↑ extra spacing
+        renderItem={({ item }) => {
+          if (!item) {
+            return <View style={{
+              flex: 1,
+              aspectRatio: 1,
+              margin: 2,
+            }} />;
+          }
 
+          const isToday = item === today;
+          const dayNum = parseInt(item.split('-')[2], 10);
+
+          return (
+            <TouchableOpacity
+              onPress={() => openDayTasks(item)}
+              style={{
+                flex: 1,
+                aspectRatio: 1,
+                margin: 2,
+                borderRadius: 8,
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: isToday ? '#3b82f6' : '#e5e7eb',
+              }}
+            >
+              <Text style={{ fontWeight: 'bold' }}>{dayNum}</Text>
+            </TouchableOpacity>
+          );
+        }}
+      />
     </View>
   );
 };
