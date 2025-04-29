@@ -3,6 +3,9 @@
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
 Test video:
+
+https://github.com/user-attachments/assets/328faa19-ed8d-4d3c-af92-964a8155c5bc
+
 [https://github.com/user-attachments/assets/ecb5b7bd-9147-43c0-932b-ba5a369b63e5](https://github.com/user-attachments/assets/ecb5b7bd-9147-43c0-932b-ba5a369b63e5)
 
 
