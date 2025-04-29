@@ -5,7 +5,7 @@ import { useTasks } from '../TaskContext'; // <-- NEW: import your custom hook
 
 const DayTasks = () => {
   const { date } = useLocalSearchParams(); // grab the selected date
-  const { tasks } = useTasks(); // you can grab one of the many objects returned by the hook by their name
+  const { tasks, deleteTask } = useTasks(); // you can grab one of the many objects returned by the hook by their name
 
   console.log("All tasks: ", tasks);
   console.log("Number of tasks: ", tasks.length);
@@ -25,12 +25,15 @@ const DayTasks = () => {
         data={tasksForDate}
         keyExtractor={(item) => String(item.id)}
         renderItem={({ item }) => (
-          <TouchableOpacity
-            className="p-4 mb-4 bg-gray-100 rounded-lg"
-            onPress={() => handleTaskPress(item.id)}
-          >
-            <Text className="text-lg font-bold">{item.taskDesc || "No Description"}</Text>
-          </TouchableOpacity>
+          <View className="p-4 mb-4 bg-gray-100 rounded-lg">
+            <TouchableOpacity onPress={() => handleTaskPress(item.id)}>
+              <Text className="text-lg font-bold">{item.taskDesc || "No Description"}</Text>
+            </TouchableOpacity>
+
+            <View className="mt-2" />
+            
+            <Button title="Delete" color="red" onPress={() => deleteTask(item.id)} />
+          </View>
         )}
       />
 
