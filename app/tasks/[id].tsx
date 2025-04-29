@@ -1,56 +1,73 @@
-import { View, Text, Button } from 'react-native';
-import React, { useState } from 'react';
-import { useLocalSearchParams, router } from 'expo-router';
+import React from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
+import { Stack, useLocalSearchParams, router } from 'expo-router';
 import { useTasks } from '../TaskContext';
 
-const TaskDetail = () => {
-    const { id } = useLocalSearchParams(); // get task ID from URL, this can be done with [id].tsx, no need params object
-    const { tasks, startTask, endTask } = useTasks(); // get tasks and control functions
-  
-    const task = tasks.find(task => task.id === id);
-  
-    if (!task) {
-      return (
-        <View className="flex-1 justify-center items-center bg-white">
-          <Text className="text-lg font-bold">Task not found.</Text>
-          <Button title="Back" onPress={() => router.back()} />
-        </View>
-      );
-    }
-  
+export default function TaskDetail() {
+  const { id } = useLocalSearchParams<{ id: string }>();
+  const { tasks, startTask, endTask } = useTasks();
+
+  const task = tasks.find(t => t.id === id);
+
+  // helper to format ISO → "07:24 AM"
+  const fmt = (iso: string) =>
+    new Date(iso).toLocaleTimeString(undefined, {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+
+  if (!task) {
     return (
-      <View className="flex-1 p-6 bg-white justify-center items-center">
-        <Text className="text-2xl font-bold mb-4">{task.taskDesc}</Text>
-  
-        <Text className="text-lg mb-2">Task ID: {task.id}</Text>
-
-        <Text>Start Time: {task.startTime}</Text>
-
-        <Text>Start Time: {task.endTime}</Text>
-  
-        <Text className="text-md mb-2">
-          Started: {task.timeStarted ? new Date(task.timeStarted).toLocaleTimeString() : "Not started yet"}
-        </Text>
-  
-        <Text className="text-md mb-4">
-          Ended: {task.timeEnded ? new Date(task.timeEnded).toLocaleTimeString() : "Not ended yet"}
-        </Text>
-  
-        {/* Show START button if not started */}
-        {!task.timeStarted && (
-          <Button title="START" onPress={() => startTask(task.id)} />
-        )}
-  
-        {/* Show END button if started but not ended */}
-        {task.timeStarted && !task.timeEnded && (
-          <Button title="END" onPress={() => endTask(task.id)} />
-        )}
-  
-        <View className="mt-8">
-          <Button title="Back" onPress={() => router.back()} />
+      <>
+        <Stack.Screen options={{ headerShown: false }} />
+        <View className="flex-1 justify-center items-center bg-white p-6">
+          <Text className="text-lg font-bold mb-6">Task not found.</Text>
+          <TouchableOpacity
+            onPress={() => router.back()}
+            className="bg-[#E40078] rounded-full px-6 py-3"
+          >
+            <Text className="text-white font-semibold">Back</Text>
+          </TouchableOpacity>
         </View>
-      </View>
+      </>
     );
-  };
-  
-  export default TaskDetail;
+  }
+
+  return (
+    <>
+      <Stack.Screen options={{ headerShown: false }} />
+      <View className="flex-1 p-6 bg-white justify-center items-center">
+        <Text className="text-2xl font-bold mb-6 text-center">
+          {task.taskDesc}
+        </Text>
+
+        <Text className="text-lg mb-4">Start: {fmt(task.startTime)}</Text>
+        <Text className="text-lg mb-6">End: {fmt(task.endTime)}</Text>
+
+        {!task.timeStarted && (
+          <TouchableOpacity
+            onPress={() => startTask(task.id)}
+            className="bg-[#E40078] rounded-full px-6 py-3 mb-4"
+          >
+            <Text className="text-white font-semibold">START</Text>
+          </TouchableOpacity>
+        )}
+        {task.timeStarted && !task.timeEnded && (
+          <TouchableOpacity
+            onPress={() => endTask(task.id)}
+            className="bg-[#E40078] rounded-full px-6 py-3 mb-4"
+          >
+            <Text className="text-white font-semibold">END</Text>
+          </TouchableOpacity>
+        )}
+
+        <TouchableOpacity
+          onPress={() => router.back()}
+          className="bg-[#E40078] rounded-full px-6 py-3"
+        >
+          <Text className="text-white font-semibold">Back</Text>
+        </TouchableOpacity>
+      </View>
+    </>
+  );
+}

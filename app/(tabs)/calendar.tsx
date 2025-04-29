@@ -37,16 +37,13 @@ const CalendarTab = () => {
         fontSize: 24,
         fontWeight: 'bold',
         textAlign: 'center',
-        marginBottom: 50,  // ↑ increased gap
-        marginTop: 50
+        marginTop: 50,
+        marginBottom: 50,
       }}>
         April 2025
       </Text>
 
-      <View style={{
-        flexDirection: 'row',
-        marginBottom: 8,     // ↑ gap before grid
-      }}>
+      <View style={{ flexDirection: 'row', marginBottom: 8 }}>
         {['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(day => (
           <View key={day} style={{ flex: 1, alignItems: 'center' }}>
             <Text style={{ fontWeight: '600' }}>{day}</Text>
@@ -59,7 +56,7 @@ const CalendarTab = () => {
         keyExtractor={(_, idx) => `cell-${idx}`}
         numColumns={7}
         scrollEnabled={false}
-        contentContainerStyle={{ marginTop: 8 }}  // ↑ extra spacing
+        contentContainerStyle={{ marginTop: 8 }}
         renderItem={({ item }) => {
           if (!item) {
             return <View style={{
@@ -82,10 +79,15 @@ const CalendarTab = () => {
                 borderRadius: 8,
                 justifyContent: 'center',
                 alignItems: 'center',
-                backgroundColor: isToday ? '#3b82f6' : '#e5e7eb',
+                backgroundColor: isToday ? '#E40078' : '#e5e7eb',
               }}
             >
-              <Text style={{ fontWeight: 'bold' }}>{dayNum}</Text>
+              <Text style={{
+                fontWeight: 'bold',
+                color: isToday ? '#FFFFFF' : '#000000',
+              }}>
+                {dayNum}
+              </Text>
             </TouchableOpacity>
           );
         }}
