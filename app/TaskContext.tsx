@@ -4,8 +4,8 @@ export type Task = {
   id: string,
   taskDesc: string,
   date: string,
-  startTime: string,
-  endTime: string,
+  startTime: string | null,
+  endTime: string | null,
   timeStarted: string | null,
   timeEnded: string | null,
 };
