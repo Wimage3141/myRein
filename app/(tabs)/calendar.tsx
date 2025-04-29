@@ -35,15 +35,17 @@ const CalendarTab = () => {
       <FlatList
         data={dates}
         keyExtractor={(item) => item}
+        numColumns={7} // <-- ADD THIS: 7 days per week
         renderItem={({ item }) => (
           <TouchableOpacity
-            className="p-4 mb-2 bg-gray-200 rounded-lg"
+            className="flex-1 m-1 p-4 bg-gray-200 rounded-lg items-center"
             onPress={() => openDayTasks(item)}
           >
-            <Text className="text-lg text-center">{item}</Text>
+            <Text className="text-sm">{item.split('-')[2]}</Text> {/* only show day (like 28) */}
           </TouchableOpacity>
         )}
       />
+
     </View>
   );
 };
